@@ -88,7 +88,7 @@ const CreateModule = () => {
             </div>
           ))}
 
-          <Button type="submit">Create</Button>
+          <Button className="bg-linear-to-r from-primary to-lilac font-[500] text-white py-3 px-6 mt-3 text-[16px] flex justify-center rounded-full hover:scale-105 items-center w-[100%]">Create</Button>
         </div>
       </div>
     </div>

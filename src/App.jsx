@@ -12,6 +12,8 @@ import DashboardLayout from './Layout/DashboardLayout';
 import IndividualSavings from './pages/Dashboard/Savings/IndividualSavings';
 import AllSavings from './pages/Dashboard/Savings/AllSavings';
 import CreateModule from './pages/Dashboard/CreateModule';
+import GroupSavings from './pages/Dashboard/Savings/GroupSavings';
+import CreateGroupModule from './pages/Dashboard/CreateGroupModule';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +25,8 @@ const router = createBrowserRouter(
       <Route index element={<Dashboard />} />
       <Route path='/dashboard/individual-savings' element={<IndividualSavings />} />
       <Route path='/dashboard/individual-savings/create-module' element={<CreateModule />} />
+      <Route path='/dashboard/group-savings' element={<GroupSavings />} />
+      <Route path='/dashboard/group-savings/create-module' element={<CreateGroupModule />} />
       <Route path='/dashboard/allsavings' element={<AllSavings />} />
       </Route>
     </Route>

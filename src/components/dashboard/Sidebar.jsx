@@ -25,7 +25,7 @@ const Sidebar = () => {
 
   const savingItems = [
     { label: "Individual savings", href: "/dashboard/individual-savings" },
-    { label: "Group savings", href: "/about" },
+    { label: "Group savings", href: "/dashboard/group-savings" },
     { label: "All savings", href: "/dashboard/allsavings" },
   ];
 
