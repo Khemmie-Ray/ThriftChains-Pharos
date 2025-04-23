@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@coinbase/wallet-sdk": "^4.3.2",
     "@headlessui/react": "^2.2.0",
+    "@reown/appkit": "^1.6.5",
+    "@reown/appkit-adapter-ethers": "^1.6.5",
     "@tailwindcss/vite": "^4.0.6",
+    "dotenv": "^16.5.0",
+    "ethers": "^6.13.5",
     "framer-motion": "^12.4.2",
     "hamburger-react": "^2.5.2",
     "react": "^19.0.0",

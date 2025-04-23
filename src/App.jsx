@@ -14,6 +14,7 @@ import AllSavings from './pages/Dashboard/Savings/AllSavings';
 import CreateModule from './pages/Dashboard/CreateModule';
 import GroupSavings from './pages/Dashboard/Savings/GroupSavings';
 import CreateGroupModule from './pages/Dashboard/CreateGroupModule';
+import './connection/index'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

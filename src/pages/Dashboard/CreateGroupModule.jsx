@@ -19,7 +19,7 @@ const CreateGroupModule = () => {
     {
       name: "savingsTitle",
       label:
-        "Savings title OR Add asset saved from the marketplace cart or wishlist",
+        "Savings title",
       placeholder: "This should contain your financial goals",
       type: "text",
     },
@@ -91,18 +91,33 @@ const CreateGroupModule = () => {
         <p className="text-[14px] font-[500] text-lightgray text-center">
         Fill out the form bellow to start saving
         </p>
-        <div className="w-full lg:w-[50%] md:w-[60%] mx-auto my-8">
-          {inputFields.map((field) => (
-            <FormInput
-              key={field.name}
-              {...field}
-              value={inputData[field.name]}
-              onChange={handleChange}
-            />
-          ))}
+        <div className="w-full lg:w-[80%] md:w-[90%] mx-auto my-8 space-y-6">
+  {[
+    ["savingsTitle", "savingFrequency"],
+    ["savingType", "commencementDate"],
+    ["groupTarget", "duration"],
+    ["description", "addmembers"],
+    ["", "chargingFee"],
+  ].map(([field1, field2], index) => (
+    <div key={index} className="flex flex-col md:flex-row gap-4">
+      {[field1, field2]
+        .filter(Boolean) 
+        .map((name) => {
+          const field = inputFields.find((f) => f.name === name);
+          return (
+            <div key={name} className="w-full">
+              <FormInput
+                {...field}
+                value={inputData[field.name]}
+                onChange={handleChange}
+              />
+            </div>
+          );
+        })}
+    </div>
+  ))}
+</div>
 
-          <Button type="submit">Create</Button>
-        </div>
       </div>
     </div>
   );
