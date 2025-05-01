@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "@headlessui/react";
+import { Link } from "react-router";
 import { PiVaultBold } from "react-icons/pi";
 
 const HistoryCard = () => {
@@ -29,9 +29,9 @@ const HistoryCard = () => {
         </p>
       </div>
       </div>
-      <Button className="border rounded-full border-primary p-2 text-[12px] lg:w-[25%] md:w-[25%] w-[100%] mb-3">
+      <Link to='/dashboard/individual-savings/1' className="flex justify-center items-center border rounded-full border-primary p-2 text-[12px] lg:w-[25%] md:w-[25%] w-[100%] mb-3">
         View Details
-      </Button>
+      </Link >
 
     </div>
   );

@@ -3,7 +3,6 @@ import { DashNav, MobileDashNav } from "../../components/shared/Reuse";
 import Thrifter from "../../components/dashboard/Thrifter";
 import AssetOwner from "../../components/dashboard/AssetOwner";
 import { Button } from "@headlessui/react";
-import { IoClose } from "react-icons/io5";
 import RegisterModal from "../../components/dashboard/RegisterModal";
 
 const Dashboard = () => {
@@ -18,7 +17,6 @@ const Dashboard = () => {
       <DashNav>Overview</DashNav>
       <div className="bg-lilac text-white p-3 flex justify-between items-center">
         <p className="">If you are a new user, get started on ThriftChains by Registering. {<RegisterModal />}</p> 
-        <IoClose />
     </div>
       <section className="flex justify-between my-8 lg:px-8 md:px-8 px-4 items-center flex-col lg:flex-row md:flex-row">
         <div className="mb-3">

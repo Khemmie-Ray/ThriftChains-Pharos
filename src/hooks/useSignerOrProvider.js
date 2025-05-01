@@ -1,5 +1,4 @@
 import { useAppKitProvider } from "@reown/appkit/react";
-import { BrowserProvider } from "ethers";
 import { useEffect, useMemo, useState } from "react";
 import { readOnlyProvider } from "../constants/readOnlyProvider";
 import { ethers } from "ethers";
@@ -13,6 +12,7 @@ const useSignerOrProvider = () => {
     () => (walletProvider ? new ethers.BrowserProvider(walletProvider) : null),
     [walletProvider]
   );
+  console.log(provider)
 
   useEffect(() => {
     if (!provider) return setSigner(null);

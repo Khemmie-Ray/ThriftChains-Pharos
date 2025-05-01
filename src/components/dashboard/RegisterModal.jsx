@@ -3,7 +3,7 @@ import { useState } from 'react'
 import useRegister from '../../hooks/useRegister'
 
  const RegisterModal = () => {
-  let [isOpen, setIsOpen] = useState(true)
+  let [isOpen, setIsOpen] = useState(false)
   const [username, setUsername] = useState("")
   const [isLister, setIslister] = useState(false)
   const [error, setError] = useState("");
@@ -11,7 +11,7 @@ import useRegister from '../../hooks/useRegister'
 
   const handleSignup = async () => {
     await handleRegister(username, isLister);
-   setIslister(null)
+   setIslister("")
    setUsername("")
   };
 
@@ -23,6 +23,7 @@ import useRegister from '../../hooks/useRegister'
   function close() {
     setIsOpen(false)
   }
+  console.log(username, typeof(isLister))
 
   return (
     <>
@@ -47,8 +48,8 @@ import useRegister from '../../hooks/useRegister'
              <input type="text" placeholder='Enter username' className='border mb-4 border-white/20 w-[100%] rounded-md hover:outline-0 p-3' onChange={(e) => setUsername(e.target.value)} value={username}/>
              <p className='mb-2'>Are you an Asset Lister?</p>
              <select name="" id="" className='border border-white/20 w-[100%] rounded-md hover:outline-0 p-3 mb-4' onChange={(e) => setIslister(e.target.value)} value={isLister}>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
 
              </select>
               <div className="mt-4">

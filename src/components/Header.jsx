@@ -9,7 +9,6 @@ const Header = () => {
   const [isOpen, setOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const { open } = useAppKit();
-  console.log(open)
 
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
