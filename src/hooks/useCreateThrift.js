@@ -6,15 +6,35 @@ import { ErrorDecoder } from "ethers-decode-error";
 import abi from '../constants/abi.json'
 import { SUPPORTED_CHAIN } from "../connection";
 
-const useRegister = () => {
+const useCreateThrift = () => {
   const contract = useContractInstance(true);
   const { address } = useAppKitAccount();
   const chainId = SUPPORTED_CHAIN;
   const errorDecoder = ErrorDecoder.create([abi]);
 
   return useCallback(
-    async (username, assetLister) => {
-      if (!username && !assetLister) {
+    async (
+      goalName,
+      goalAmount,
+      frequency,
+      vaultAddress,
+      startTime,
+      endTime,
+      platformFee,
+      emergencyFee,
+      participant
+    ) => {
+      if (
+        !goalName ||
+        !goalAmount ||
+        frequency === "" ||
+        !vaultAddress ||
+        !startTime ||
+        !endTime ||
+        !platformFee ||
+        !emergencyFee ||
+        participant === null || participant === undefined
+      ) {
         toast.error("Invalid Input");
         return;
       }
@@ -35,21 +55,31 @@ const useRegister = () => {
       }
 
       try {
-       
-
-        const tx = await contract.register(username, assetLister);
+        const tx = await contract.createThrift(
+          goalName,
+          goalAmount,
+          frequency,
+          vaultAddress,
+          startTime,
+          endTime,
+          platformFee,
+          emergencyFee,
+          participant
+        );
+        console.log(tx);
         const receipt = await tx.wait();
+        console.log(receipt);
 
         if (receipt.status === 1) {
-          toast.success("Registration Successful");
+          toast.success("New module creation Successful");
           return;
         }
 
-        toast.error("Registration failed");
+        toast.error("New module creation failed");
         return;
       } catch (err) {
         const decodedError = await errorDecoder.decode(err);
-        toast.error(`Registration failed - ${decodedError.reason}`, {
+        toast.error(`New module creation failed - ${decodedError.reason}`, {
           position: "top-center",
         });
       }
@@ -58,4 +88,4 @@ const useRegister = () => {
   );
 };
 
-export default useRegister;
+export default useCreateThrift;

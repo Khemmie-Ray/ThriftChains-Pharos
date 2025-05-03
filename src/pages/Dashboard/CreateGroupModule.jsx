@@ -1,123 +1,186 @@
 import React, { useState } from "react";
 import { DashNav, Button } from "../../components/shared/Reuse";
-import FormInput from "../../components/shared/FormInput";
+import { ethers, parseUnits } from "ethers";
+import useCreateThrift from "../../hooks/useCreateThrift";
+import { toast } from "react-toastify";
 
 const CreateGroupModule = () => {
-  const [inputData, setInputData] = useState({
-    savingsTitle: "",
-    savingFrequency: "",
-    savingsType: "",
-    commencementDate: "",
-    groupTarget: "",
-    duration: "",
-    description: "",
-    addmembers: "",
-    chargingFee: ""
-  });
+  const [goalName, setGoalName] = useState("");
+  const [goalAmount, setGoalAmount] = useState("");
+  const [savingFrequency, setSavingFrequency] = useState("");
+  const [vaultAddress, setVaultAddress] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [platformFee, setPlatformFee] = useState("");
+  const [emergencyFee, setEmergencyFee] = useState("");
+  const [participant, setParticipant] = useState(1);
 
-  const inputFields = [
-    {
-      name: "savingsTitle",
-      label:
-        "Savings title",
-      placeholder: "This should contain your financial goals",
-      type: "text",
-    },
-    {
-      name: "savingFrequency",
-      label: "Saving frequency",
-      placeholder: "Click on the arrow to select an option",
-      type: "dropdown",
-      options: ["Daily", "Weekly", "Monthly", "Yearly"],
-    },
-    {
-      name: "savingType",
-      label: "Saving type",
-      placeholder: "Click on the arrow to select an option",
-      type: "dropdown",
-      options: ["Daily", "Weekly"],
-    },
-    {
-      name: "commencementDate",
-      label: "Commencement Date",
-      placeholder: "Click on the arrow to select an option",
-      type: "date",
-    },
-    {
-      name: "groupTarget",
-      label: "Group Target Amount",
-      placeholder: "Enter the group target amount",
-      type: "text",
-    },
-    {
-      name: "duration",
-      label: "Duration",
-      placeholder: "Enter duration",
-      type: "text",
-    },
-    {
-      name: "description",
-      label: "Description",
-      placeholder: "Enter your message",
-      type: "textarea",
-    },
-    {
-      name: "addmembers",
-      label: "Add members",
-      placeholder: "Add members via email or phone number",
-      type: "text",
-    },
-    {
-      name: "chargingFee",
-      label: "Charging fee",
-      placeholder: "Enter Charging fee percentage or amount",
-      type: "checkbox",
-      options: ["Yes", "No"],
-    },
-  ];
+  const handleCreate = useCreateThrift();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputData((prev) => ({ ...prev, [name]: value }));
+  const handleCreateThrift = async () => {
+    const startDate = Math.floor(new Date(startTime).getTime() / 1000);
+    const endDate = Math.floor(new Date(endTime).getTime() / 1000);
+
+    if (startDate <= Math.floor(Date.now() / 1000)) {
+      toast.error("Start time cannot be in the past", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    if (endDate <= startDate) {
+      toast.error("End time must be after start time", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const goalAmountInWei = ethers.parseUnits(goalAmount, 18);
+    const platformFeeInWei = ethers.parseUnits(platformFee, 18);
+    const emergencyFeeInWei = ethers.parseUnits(emergencyFee, 18);
+
+    await handleCreate(
+      goalName,
+      goalAmountInWei.toString(),
+      savingFrequency,
+      vaultAddress,
+      startDate,
+      endDate,
+      platformFeeInWei.toString(),
+      emergencyFeeInWei.toString(),
+      participant
+    );
+    setGoalAmount("");
+    setGoalName("");
+    setEmergencyFee("");
+    setParticipant(1);
+    setStartTime("");
+    setEndTime("");
+    setPlatformFee("");
+    setVaultAddress("");
+    savingFrequency("");
   };
 
   return (
     <div>
-      <DashNav>Create Individual Module</DashNav>
+      <DashNav>Create Group Module</DashNav>
       <div className="bg-white my-6 mx-8 p-6">
         <h3 className="font-[600] mb-4 text-[20px] lg:text-[24px] md:text-[24px] mt-6 text-center leading-0">
           Create Group Module
         </h3>
         <p className="text-[14px] font-[500] text-lightgray text-center">
-        Fill out the form bellow to start saving
+          Fill out the form below to start saving
         </p>
-        <div className="w-full lg:w-[80%] md:w-[90%] mx-auto my-8 space-y-6">
-  {[
-    ["savingsTitle", "savingFrequency"],
-    ["savingType", "commencementDate"],
-    ["groupTarget", "duration"],
-    ["description", "addmembers"],
-    ["", "chargingFee"],
-  ].map(([field1, field2], index) => (
-    <div key={index} className="flex flex-col md:flex-row gap-4">
-      {[field1, field2]
-        .filter(Boolean) 
-        .map((name) => {
-          const field = inputFields.find((f) => f.name === name);
-          return (
-            <div key={name} className="w-full">
-              <FormInput
-                {...field}
-                value={inputData[field.name]}
-                onChange={handleChange}
-              />
-            </div>
-          );
-        })}
-    </div>
-  ))}
-</div>
 
+        <div className="w-[100%] lg:w-[50%] md:w-[60%] mx-auto my-8">
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">
+              Savings title OR Add asset saved from the marketplace cart or
+              wishlist
+            </label>
+            <input
+              type="text"
+              value={goalName}
+              onChange={(e) => setGoalName(e.target.value)}
+              placeholder="This should contain your financial goals"
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">
+              Savings amount / target amount
+            </label>
+            <input
+              type="text"
+              value={goalAmount}
+              onChange={(e) => setGoalAmount(e.target.value).parseEthers}
+              placeholder="Add your target amount"
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">Saving frequency</label>
+            <select
+              value={savingFrequency}
+              onChange={(e) => setSavingFrequency(e.target.value)}
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            >
+              <option value="" disabled>
+                Click on the arrow to select an option
+              </option>
+              <option value={0}>Daily</option>
+              <option value={1}>Weekly</option>
+              <option value={2}>Bi-Weekly</option>
+              <option value={3}>Monthly</option>
+            </select>
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">
+              Add Currency Address
+            </label>
+            <input
+              type="text"
+              value={vaultAddress}
+              onChange={(e) => setVaultAddress(e.target.value)}
+              placeholder="Add Wallet Address"
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">Start Time</label>
+            <input
+              type="date"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">End Time</label>
+            <input
+              type="date"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">Platform Fee</label>
+            <input
+              type="text"
+              value={platformFee}
+              onChange={(e) => setPlatformFee(e.target.value)}
+              placeholder="Set a Fee"
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">Emergency Fee</label>
+            <input
+              type="text"
+              value={emergencyFee}
+              onChange={(e) => setEmergencyFee(e.target.value)}
+              placeholder="Set a Penalty Fee"
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <div className="my-4">
+            <label className="text-[14px] font-[500]">Number of Participants (1 upwards)</label>
+            <input
+              type="number"
+              value={participant}
+              onChange={(e) => setParticipant(e.target.value)}
+              placeholder="Input Number of participants"
+              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+            />
+          </div>
+          <button
+            onClick={handleCreateThrift}
+            className="bg-linear-to-r from-primary to-lilac font-[500] text-white py-3 px-6 mt-3 text-[16px] flex justify-center rounded-full hover:scale-105 items-center w-[100%]"
+          >
+            Create
+          </button>
+        </div>
       </div>
     </div>
   );

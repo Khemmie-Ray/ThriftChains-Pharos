@@ -24,7 +24,7 @@ const Thrifter = () => {
               </span>
             </p>
             <NavLink
-              to="/"
+              to="/dashboard/group-savings/create-module"
               className="border border-primary text-primary font-[500] p-3 mt-3 text-[12px] flex justify-center rounded-full hover:scale-105 items-center"
             >
               <AiOutlinePlus className="mr-2" /> Create New Module
