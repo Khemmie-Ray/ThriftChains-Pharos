@@ -11,8 +11,8 @@ const CreateGroupModule = () => {
   const [vaultAddress, setVaultAddress] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [platformFee, setPlatformFee] = useState("");
-  const [emergencyFee, setEmergencyFee] = useState("");
+  const [platformFee, setPlatformFee] = useState("0.01");
+  const [emergencyFee, setEmergencyFee] = useState("0.05");
   const [participant, setParticipant] = useState(1);
 
   const handleCreate = useCreateThrift();
@@ -115,17 +115,20 @@ const CreateGroupModule = () => {
             </select>
           </div>
           <div className="my-4">
-            <label className="text-[14px] font-[500]">
-              Add Currency Address
-            </label>
-            <input
-              type="text"
+            <label className="text-[14px] font-[500]">Pick Currency</label>
+            <select
               value={vaultAddress}
               onChange={(e) => setVaultAddress(e.target.value)}
-              placeholder="Add Wallet Address"
               className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
-            />
-          </div>
+            >
+              <option value="" disabled>
+                Click on the arrow to select an option
+              </option>
+              <option value={"0xBEC3f434B4Ed5f50b6eD2aB0d9Fd4DCA2563069F"}>USDC</option>
+              <option value={"0x3C60fA815cb652dc593dcB709BEc27b6A57fC41f"}>DAI</option>
+              <option value={"0x2A1bA612B42c2a5637e9987B5A1ed16003c90213"}>USDT</option>
+            </select>
+          </div>  
           <div className="my-4">
             <label className="text-[14px] font-[500]">Start Time</label>
             <input
@@ -144,22 +147,22 @@ const CreateGroupModule = () => {
               className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
             />
           </div>
-          <div className="my-4">
+          <div className="my-4 hidden">
             <label className="text-[14px] font-[500]">Platform Fee</label>
             <input
               type="text"
               value={platformFee}
-              onChange={(e) => setPlatformFee(e.target.value)}
+              readOnly
               placeholder="Set a Fee"
-              className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
+              className="block p-3 border border-lightgray w-[100%] text-xs rounded-lg"
             />
           </div>
-          <div className="my-4">
+          <div className="my-4 hidden">
             <label className="text-[14px] font-[500]">Emergency Fee</label>
             <input
               type="text"
               value={emergencyFee}
-              onChange={(e) => setEmergencyFee(e.target.value)}
+              readOnly
               placeholder="Set a Penalty Fee"
               className="p-3 border border-lightgray block w-[100%] text-xs rounded-lg"
             />
